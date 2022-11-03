@@ -263,19 +263,22 @@ JNINativeMethod gMethods[] = {
 
 void register_fengmi_net_iwinfo(JNIEnv* env)
 {
+    /* 这里注册的是调用者的类的path, 即:
+     * com.android.commands.geth.Wifi
+     * */
     jniRegisterNativeMethods(env, "com/android/commands/geth/Wifi", gMethods, NELEM(gMethods));
 /*
-  jclass clazz;
-  clazz = env->FindClass("fengmi/net/IwInfo");
-  if (clazz == NULL) {
-      printf("FindClass failed.\n");
-      return;
-  }
+    jclass clazz;
+    clazz = env->FindClass("fengmi/net/IwInfo");
+    if (clazz == NULL) {
+        printf("FindClass failed.\n");
+        return;
+    }
 
-  if (env->RegisterNatives(clazz, gMethods, sizeof(gMethods) / sizeof(gMethods[0])) < 0) {
-      printf("RegisterNatives failed.\n");
-      return;
-  }
+    if (env->RegisterNatives(clazz, gMethods, sizeof(gMethods) / sizeof(gMethods[0])) < 0) {
+        printf("RegisterNatives failed.\n");
+        return;
+    }
 */
 
   return;
