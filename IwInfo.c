@@ -16,7 +16,7 @@
 #include <nativehelper/JNIHelp.h>
 
 #define NATIVE_METHOD(className, functionName, signature) \
-{ #functionName, signature, (void*)(Fengmi_net_ ## className ## _ ## functionName) }
+{ #functionName, signature, (void*)(fengmi_net_ ## className ## _ ## functionName) }
 
 enum command_identify_by {
     CIB_NONE,
@@ -241,6 +241,8 @@ int get_wiphy(enum command_identify_by idby, const char *name)
 
     nl80211_cleanup(&nli);
 
+    printf("HE_SUPPORT:%s\n", nli.he_support ? "Supported" : "Unsupport");
+
     return !!(nli.he_support);
 
 error:
@@ -250,16 +252,32 @@ error:
 }
 
 JNIEXPORT jint JNICALL
-Fengmi_net_IwInfo_getHeSupport(void)
+fengmi_net_IwInfo_getHeSupport(JNIEnv *env, jclass this)
 {
     return get_wiphy(CIB_PHY, "phy0");
 }
 
-static JNINativeMethod gMethods[] = {
+JNINativeMethod gMethods[] = {
     NATIVE_METHOD(IwInfo, getHeSupport, "()I"),
 };
 
-void register_Fengmi_net_iwinfo(JNIEnv* env) {
-  jniRegisterNativeMethods(env, "java/net/IwInfo", gMethods, NELEM(gMethods));
+void register_fengmi_net_iwinfo(JNIEnv* env)
+{
+    jniRegisterNativeMethods(env, "com/android/commands/geth/Wifi", gMethods, NELEM(gMethods));
+/*
+  jclass clazz;
+  clazz = env->FindClass("fengmi/net/IwInfo");
+  if (clazz == NULL) {
+      printf("FindClass failed.\n");
+      return;
+  }
+
+  if (env->RegisterNatives(clazz, gMethods, sizeof(gMethods) / sizeof(gMethods[0])) < 0) {
+      printf("RegisterNatives failed.\n");
+      return;
+  }
+*/
+
+  return;
 }
 
